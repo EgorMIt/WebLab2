@@ -10,10 +10,8 @@ document.getElementById("R_field")
     })
 document.getElementById("graphic").onclick = function(event) {
     const rect = document.getElementById("graphic").getBoundingClientRect();
-    var cordX;
-    var cordY;
 
-    if ((r>=2&&r<=5)) {
+    if ((r>=2 && r<=5)) {
 
         const x = ((event.clientX - rect.left -125)/(18*5)*r);
         const y = (((- event.clientY) + rect.bottom -125)/(18*5)*r);
@@ -39,6 +37,7 @@ document.getElementById("graphic").onclick = function(event) {
 
 
 function changePoint(x,y) {
+    let n = document.getElementById("table_out").getElementsByTagName("tr").length
     let point = $("#point");
     point.attr({
         cx: x,

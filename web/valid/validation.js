@@ -39,12 +39,12 @@ function set_value() {
             flag1 = true;
             inputY.value = "";
             inputY.style.backgroundColor = "rgba(250, 50, 50, .4)";
-        } else if (Number(y.split(".")[0]) >= 5 && Number(y.split(".")[1]) > 0) {
+        } else if (Number(y.split(".")[0]) >= 3 && Number(y.split(".")[1]) > 0) {
             //    error.textContent = "Ошибка: Выход за пределы, введите число в интервале [-5;5]";
             inputY.value = "";
             inputY.style.backgroundColor = "rgba(250, 50, 50, .4)";
             flag1 = true;
-        } else if (Number(y.split(".")[0]) <= -3 && Number(y.split(".")[1]) > 0) {
+        } else if (Number(y.split(".")[0]) <= -5 && Number(y.split(".")[1]) > 0) {
             //    error.textContent = "Ошибка: Выход за пределы, введите число в интервале [-5;5]";
             inputY.value = "";
             inputY.style.backgroundColor = "rgba(250, 50, 50, .4)";
@@ -67,7 +67,7 @@ function check_R() {
         flag2 = true;
     } else {
         let r = inputR.value.replace(/[,]/, ".");
-        if (r < 2 || r > 5) {
+        if (r < 1 || r > 4) {
             flag2 = true;
             inputR.value = "";
             inputR.style.backgroundColor = "rgba(250, 50, 50, .4)";
