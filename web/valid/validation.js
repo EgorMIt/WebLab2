@@ -35,7 +35,7 @@ function set_value() {
         flag1 = true;
     } else {
         let y = inputY.value.replace(/[,]/, ".");
-        if (y < -3 || y > 5) {
+        if (y < -5 || y > 3) {
             flag1 = true;
             inputY.value = "";
             inputY.style.backgroundColor = "rgba(250, 50, 50, .4)";

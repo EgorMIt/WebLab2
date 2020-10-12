@@ -27,7 +27,7 @@ public class ControllerServlet extends HttpServlet {
                 getServletContext().getRequestDispatcher("/areaCheckServlet").forward(req, resp);
 
             } else {
-                    getServletContext().getRequestDispatcher("/main_page.jsp").forward(req, resp);
+                    getServletContext().getRequestDispatcher("/mainPage.jsp").forward(req, resp);
 
             }
 

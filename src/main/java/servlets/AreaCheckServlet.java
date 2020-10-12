@@ -53,14 +53,14 @@ public class AreaCheckServlet extends HttpServlet {
         Double y = Math.ceil(  Double.parseDouble(req.getParameter("Y")) * scale) / scale;
         Double r =  Math.ceil(  Double.parseDouble(req.getParameter("R")) * scale) / scale;
 
-        if(((x==-2)||(x==-1.5)||(x==-1)||(x==-0.5)||(x==0)||(x==0.5)||(x==1)||(x==1.5)||(x==2))&&(y>=-3)&&(y<=5)&&(r>=2)&&(r<=5)){
+        if(((x==-3)||(x==-2)||(x==-1)||(x==0)||(x==1)||(x==2)||(x==3)||(x==4)||(x==5))&&(y>=-5)&&(y<=3)&&(r>=1)&&(r<=4)){
             if(zona(x,y,r)){
-                res = "odaaa, ti popal";
+                res = "Попадание";
                 model.setDot(new Dot(x,y,r,true));
                 drawTable(resp,x.toString(),y.toString(),r.toString(),res);
 
             }else {
-                res = "noo, ti loh";
+                res = "Мимо";
                 model.setDot(new Dot(x,y,r,false));
                 drawTable(resp,x.toString(),y.toString(),r.toString(),res);
             }
@@ -81,7 +81,7 @@ public class AreaCheckServlet extends HttpServlet {
         Double y = Math.ceil(  Double.parseDouble(req.getParameter("Y")) * scale) / scale;
         Double r =  Math.ceil(  Double.parseDouble(req.getParameter("R")) * scale) / scale;
 
-        if((r>=2)&&(r<=5)){
+        if((r>=1)&&(r<=4)){
             if(zona(x,y,r)){
                 res = "odaaa, ti popal";
                 model.setDot(new Dot(x,y,r,true));
@@ -124,7 +124,7 @@ public class AreaCheckServlet extends HttpServlet {
                 "<div id = \"error2\"> Y =  " + y + "</div>" +
                 "<div id = \"error3\"> R =  " + r + "</div>" +
                 "<div id = \"error3\"> Result ->  " + otv + "</div>" +
-                "<a href = \"http://localhost:8080/WebLab2_war_exploded\">Go back</a>" +
+                "<a href = \"http://localhost:8080/WebLab2\">Go back</a>" +
                 "</body></html>";
         writer.write(answer);
         writer.close();
@@ -140,7 +140,7 @@ public class AreaCheckServlet extends HttpServlet {
                 "  </head>" +
                 "<body>" +
                 "<div id = \"error\">Error " + text + "</div>" +
-                "<a href = \"http://localhost:8080/WebLab2_war_exploded\">Go back</a>" +
+                "<a href = \"http://localhost:8080/WebLab2\">Go back</a>" +
                 "</body></html>";
         writer.write(answer);
         writer.close();

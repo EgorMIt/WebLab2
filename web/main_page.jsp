@@ -1,23 +1,15 @@
 <%@ page import="model.Model" %><%--
   Created by IntelliJ IDEA.
-  User: Taras
-  Date: 29.09.2020
+  User: EgorMit
+  Date: 09.10.2020
   Time: 14:27
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>$Title$</title>
-    <!-- <div class="hellocard" onClick="window.location='https://vk.com/provladdd'">
-       <img src="resourses/icon2.png" class="imageicon">
-       <p class="name ">Тарасенко Владислав</p>
-       <p class="logo2" >Group P3210</p>
-       <p class="logo2" >Laba 2122</p>
-       <p class="logo2" >first draft</p>
+    <title>Lab2</title>
 
-     </div>
-     -->
     <style>
         <%@include file='css/style.css' %>
     </style>
@@ -30,9 +22,9 @@
     <form id="form" method="GET">
 
         <div class="graphic card">
-            <p style="visibility: hidden">maybee grafic is here</p>
+            <p style="visibility: hidden">maybe grafic is here</p>
             <%@ include file="graficc.html" %>
-            <circle id="point" r="3" cx="125" cy="125" fill="white" stroke="#641AD5" visibility="visible"/>
+            <circle id="point" r="3" cx="125" cy="125" fill="white" stroke="#641AD5" visibility="visible"></circle>
             <jsp:include page="table.jsp" />
             </svg>
         </div>
@@ -66,8 +58,6 @@
                 <input name="Xgr" id="X_field" type="hidden">
             </div>
 
-            <!--<button type="button" class="enterButton" id="submit-button" onclick="">нажать</button>-->
-
             <button type="submit" class="button" id="submit"
                     style="margin-top: 20px ; margin-left: 20px; font-family: Arial; border-radius: 2px"> Отправить
             </button>
@@ -75,7 +65,7 @@
 
         </div>
         <div class="table-data card">
-            <p style="text-align: center; font-size: 20px;  font-family: 'Arial Black'; color: blanchedalmond; margin-top: 5px;" >Здесь будет таблица</p>
+
             <table border="1px" class="result-table" style="margin-top: 10px; color: antiquewhite; box-shadow: #db2d2d;font-family: 'Arial Black';font-size: 20px">
                 <thead>
                 <td id="tbX"> X</td>

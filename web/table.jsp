@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Taras
-  Date: 04.10.2020
-  Time: 22:35
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="point.Dot" %>
 <%@ page import="model.Model" %>
