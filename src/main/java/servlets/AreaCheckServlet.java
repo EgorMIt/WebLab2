@@ -85,16 +85,6 @@ public class AreaCheckServlet extends HttpServlet {
                 res = "True";
                 model.setPoint(new Point(x,y,r,true));
 
-                /*try {
-                    for (int i = 0; i < model.points.size(); i++) {
-                        res+= (model.points.get(i).toString());
-
-                    }
-                    drawTable(resp,x.toString(),y.toString(),r.toString(),res);
-                }catch (Exception e){
-                    createErrorPage(resp,"Error page!");
-                }*/
-
             }else {
                 res = "False";
                 model.setPoint(new Point(x,y,r,false));
