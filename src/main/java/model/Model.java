@@ -9,8 +9,4 @@ public class Model {
     public void setPoint(Point point){
         points.add(point);
     }
-
-    public ArrayList<Point> getPoint() {
-        return points;
-    }
 }
