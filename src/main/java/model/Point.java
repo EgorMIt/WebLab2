@@ -1,16 +1,15 @@
-package point;
+package model;
 
-public class Dot {
+public class Point {
     public Double x;
     public Double y;
     public Double r;
     public boolean result;
-    public Dot(Double x, Double y, Double r, boolean result){
+    public Point(Double x, Double y, Double r, boolean result){
             this.x=x;
             this.y=y;
             this.r=r;
             this.result=result;
-
     }
 
     public String getR() {
@@ -18,8 +17,6 @@ public class Dot {
     }
 
     public String getX() {
-
-
         Double cordX = (x*90)/r+125;
         return cordX.toString();
     }

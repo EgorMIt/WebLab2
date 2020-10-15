@@ -1,13 +1,12 @@
 let r;
 
-// перед отправкой формы, её нужно вставить в документ
-
-
 document.getElementById("R_field")
     .addEventListener('input', e => {
         check_R();
         r = inputR.value;
     })
+
+
 document.getElementById("graphic").onclick = function(event) {
     const rect = document.getElementById("graphic").getBoundingClientRect();
 
@@ -18,7 +17,6 @@ document.getElementById("graphic").onclick = function(event) {
         let xt = (event.clientX - rect.left);
         let yt = (( event.clientY) - rect.top );
 
-    //    console.log(rect.left +"  "+rect.top + " "+ rect.bottom)
         changePoint(xt,yt)
         let inputY = document.getElementById("Y_field");
         inputY.value = y.toString() ;
@@ -26,13 +24,10 @@ document.getElementById("graphic").onclick = function(event) {
         inputx.value = x.toString() ;
        $("#submit2").click()
 
-
     } else {
       alert("I can't check your point \n" +
           "Please check R ")
     }
-
-
 }
 
 

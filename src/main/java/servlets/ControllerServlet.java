@@ -15,21 +15,18 @@ public class ControllerServlet extends HttpServlet {
         resp.setContentType("text/html");
 
         try {
-
             if (tryToParse(req.getParameter("Y")) &&
                     tryToParse(req.getParameter("R"))) {
 
-                //createErrorPage(resp, req.getParameter("Y"), req.getParameter("R"));
                 getServletContext().getRequestDispatcher("/areaCheckServlet").forward(req, resp);
 
             } else {
                     getServletContext().getRequestDispatcher("/mainPage.jsp").forward(req, resp);
-
             }
 
         } catch (Exception e) {
             PrintWriter writer = resp.getWriter();
-            writer.write("Server wanna cry: " + e.toString());
+            writer.write("An error occurs in Controller: " + e.toString());
             writer.close();
         }
     }

@@ -5,7 +5,6 @@ function create_get(){
     let url = new URL('http://localhost:8080/TestAppL2_war_exploded/CServlet');
 
     url.searchParams.set('y',value_Y);
-  //  url.searchParams.set('yy', checkY);
     url.searchParams.set('r',value_R);
 
     xhr.onreadystatechange = function () {

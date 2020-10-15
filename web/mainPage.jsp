@@ -99,9 +99,9 @@
                         <tbody id="table_out">
                         <ul>
                             <%
-                                if (!Model.Dots.isEmpty()) {
-                                    for (int i = Model.Dots.size()-1; i >= 0; i--) {
-                                        out.println(Model.Dots.get(i).toString());
+                                if (!Model.points.isEmpty()) {
+                                    for (int i = Model.points.size()-1; i >= 0; i--) {
+                                        out.println(Model.points.get(i).toString());
                                     }
                                 }
                             %>

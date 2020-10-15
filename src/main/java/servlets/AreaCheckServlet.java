@@ -1,7 +1,7 @@
 package servlets;
 
 import model.Model;
-import point.Dot;
+import model.Point;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,57 +26,54 @@ public class AreaCheckServlet extends HttpServlet {
         try {
             if (!(tryToParse(req.getParameter("x")) && (tryToParse(req.getParameter("Xgr"))))) {
                 if (tryToParse(req.getParameter("x"))) {
-                    //Если нажата кнопка
+
                     checkButton(req,resp);
                 } else if (tryToParse(req.getParameter("Xgr"))) {
-                    //если пришло по нажатию на график
+
                     checkGraphic(req,resp);
                 } else {
-                    createErrorPage(resp, "Please no...oooh_ i can't find X or Xgr");
+                    createErrorPage(resp, "Unable to fund X");
                 }
 
             } else {
-                createErrorPage(resp, "Please no...oooh");
+                createErrorPage(resp, "Error page!");
             }
 
         } catch (Exception e) {
-
+            PrintWriter writer = resp.getWriter();
+            writer.write("An error occurs in AreaCheck: " + e.toString());
+            writer.close();
         }
-
     }
 
 
     public void checkButton(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
-
         double scale = Math.pow(10, 4);
         String res = "";
         Double x = Math.ceil(Double.parseDouble(req.getParameter("x")) * scale) / scale;
         Double y = Math.ceil(Double.parseDouble(req.getParameter("Y")) * scale) / scale;
         Double r = Math.ceil(Double.parseDouble(req.getParameter("R")) * scale) / scale;
 
-        if(((x==-3)||(x==-2)||(x==-1)||(x==0)||(x==1)||(x==2)||(x==3)||(x==4)||(x==5))&&(y>=-5)&&(y<=3)&&(r>=1)&&(r<=4)){
-            if(zona(x,y,r)){
+        if(((x==-3) || (x==-2) || (x==-1) || (x==0) || (x==1) || (x==2) || (x==3) || (x==4) || (x==5)) && (y>=-5) &&
+                (y<=3) && (r>=1) && (r<=4)){
+            if(ifInZone(x,y,r)){
                 res = "True";
-                model.setDot(new Dot(x,y,r,true));
+                model.setPoint(new Point(x,y,r,true));
 
             }else {
                 res = "False";
-                model.setDot(new Dot(x,y,r,false));
+                model.setPoint(new Point(x,y,r,false));
             }
             drawTable(resp,x.toString(),y.toString(),r.toString(),res);
         }else {
-          createErrorPage(resp,"error!");
+          createErrorPage(resp,"Error page!");
         }
 
         HttpSession session = req.getSession();
         session.setAttribute("model", model);
-
-
     }
 
     public void checkGraphic(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
         double scale = Math.pow(10, 4);
         String res = "";
         Double x = Math.ceil(Double.parseDouble(req.getParameter("Xgr")) * scale) / scale;
@@ -84,48 +81,128 @@ public class AreaCheckServlet extends HttpServlet {
         Double r = Math.ceil(Double.parseDouble(req.getParameter("R")) * scale) / scale;
 
         if((r>=1)&&(r<=4)){
-            if(zona(x,y,r)){
+            if(ifInZone(x,y,r)){
                 res = "True";
-                model.setDot(new Dot(x,y,r,true));
+                model.setPoint(new Point(x,y,r,true));
 
-                try {
-                    for (int i = 0; i < model.Dots.size(); i++) {
-                        res+= (model.Dots.get(i).toString());
+                /*try {
+                    for (int i = 0; i < model.points.size(); i++) {
+                        res+= (model.points.get(i).toString());
 
                     }
                     drawTable(resp,x.toString(),y.toString(),r.toString(),res);
                 }catch (Exception e){
-                    drawTable(resp,x.toString(),y.toString(),r.toString(),res);
-                }
-              //drawTable(resp,x.toString(),y.toString(),r.toString(),res);
+                    createErrorPage(resp,"Error page!");
+                }*/
 
             }else {
                 res = "False";
-                model.setDot(new Dot(x,y,r,false));
-                drawTable(resp,x.toString(),y.toString(),r.toString(),res);
-
+                model.setPoint(new Point(x,y,r,false));
             }
+            drawTable(resp,x.toString(),y.toString(),r.toString(),res);
 
         }else {
-            createErrorPage(resp,"error!");
+            createErrorPage(resp,"Error page!");
         }
     }
 
-    public void drawTable(HttpServletResponse resp, String x, String y, String r, String otv) throws IOException {
+    public void drawTable(HttpServletResponse resp, String x, String y, String r, String result) throws IOException {
 
         PrintWriter writer = resp.getWriter();
         String answer = "<html>\n" +
                 "  <head>\n" +
-                "    <meta charset=\"utf-8\" /> " +
-                "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/error.css\">" +
-                "  </head>" +
-                "<body>" +
-                "<div id = \"error\"> X =  " + x + "</div>" +
-                "<div id = \"error2\"> Y =  " + y + "</div>" +
-                "<div id = \"error3\"> R =  " + r + "</div>" +
-                "<div id = \"error3\"> Result ->  " + otv + "</div>" +
-                "<a href = \"http://localhost:8080/WebLab2_war_exploded\">Go back</a>" +
-                "</body></html>";
+                "   <meta charset=\"utf-8\" /> " +
+                "   <title>Result</title>" +
+                "   <style>\n" +
+                ".header-text{\n" +
+                "\t\t\t\tcolor: black;\n" +
+                "\t\t\t\tfont-size: 20px;\n" +
+                "\t\t\t}" +
+                "table {\n" +
+                "\t\t\t\tfont-size: 14px;\n" +
+                "\t\t\t\tmargin: auto;\n" +
+                "\t\t\t\ttext-align: center;\n" +
+                "\t\t\t\tborder-collapse: collapse;\n" +
+                "\t\t\t\tborder-top: 5px ridge #F1692F;\n" +
+                "\t\t\t\tborder-bottom: 5px ridge #F1692F;\n" +
+                "\t\t\t\tborder-right: 5px ridge #F1692F;\n" +
+                "\t\t\t\tborder-left: 5px ridge #F1692F;\n" +
+                "\t\t\t}" +
+                "th {\n" +
+                "\t\t\t\tfont-size: 13px;\n" +
+                "\t\t\t\tfont-weight: normal;\n" +
+                "\t\t\t\tbackground: #FFBB97;\n" +
+                "\t\t\t\tborder-right: 1px ridge #F1692F;\n" +
+                "\t\t\t\tborder-left: 1px ridge #F1692F;\n" +
+                "\t\t\t\tcolor: black;\n" +
+                "\t\t\t\tpadding: 8px;\n" +
+                "\t\t\t}" +
+                "td {\n" +
+                "\t\t\t\tbackground: #FFBB97;\n" +
+                "\t\t\t\tborder-right: 1px ridge #F1692F;\n" +
+                "\t\t\t\tborder-left: 1px ridge #F1692F;\n" +
+                "\t\t\t\tcolor: black;\n" +
+                "\t\t\t\tpadding: 8px;\n" +
+                "\t\t\t}" +
+                "\t\t</style>" +
+                "\t</head>" +
+                "\t<body bgcolor=\"#931C14\">\n" +
+                "        <table class=\"table\">\n" +
+                "            <thead>\n" +
+                "                <tr>\n" +
+                "                    <th colspan=\"2\" class=\"table\">\n" +
+                "                        <div class=\"header-text\"> Checking result: </div>\n" +
+                "                    </th>\n" +
+                "                </tr>\n" +
+                "            </thead>\n" +
+                "            <tbody>\n" +
+                "                <tr>\n" +
+                "                    <td class=\"table\">\n" +
+                "                        <div id=\"label_x\">X = </div>\n" +
+                "                    </td>\n" +
+                "                    <td class=\"table\">\n" +
+                "                        <div id = \\\"error1\\\">" + x + "</div>\t\t\t\t\t\n" +
+                "                    </td>\n" +
+                "                </tr>\n" +
+                "\n" +
+                "                <tr>\n" +
+                "                    <td class=\"table\">\n" +
+                "                        <div id=\"label_y\">Y = </div>\n" +
+                "                    </td>\n" +
+                "                    <td class=\"table\">\n" +
+                "                       <div id = \\\"error2\\\">" + y + "</div>\n" +
+                "                    </td>\n" +
+                "                </tr>\n" +
+                "\n" +
+                "                <tr>\n" +
+                "                    <td class=\"table\">\n" +
+                "                        <div id=\"label_r\">R = </div>\n" +
+                "                    </td>\n" +
+                "                    <td class=\"table\">\n" +
+                "                        <div id = \\\"error3\\\">" + r + "</div>\n" +
+                "                    </td>\n" +
+                "                </tr>\n" +
+                "\n" +
+                "                <tr>\n" +
+                "                    <td class=\"table\">\n" +
+                "                        <div id=\"label_r\">Result: </div>\n" +
+                "                    </td>\n" +
+                "                    <td class=\"table\">\n" +
+                "                        <div id = \\\"error4\\\">" + result + "</div>\n" +
+                "                    </td>\n" +
+                "                </tr>" +
+                "\n" +
+                "                <tr>\n" +
+                "                    <td class=\"table\">\n" +
+                "                        <a href = \"http://localhost:8080/WebLab2_war_exploded\"> BACK </a>\n" +
+                "                    </td>\n" +
+                "\t\t\t\t\t<td class=\"table\">                       \n" +
+                "                    </td>\n" +
+                "                </tr>              \n" +
+                "            </tbody>\n" +
+                "        </table>\n" +
+                "    </body>\n" +
+                "</html>";
         writer.write(answer);
         writer.close();
     }
@@ -140,7 +217,7 @@ public class AreaCheckServlet extends HttpServlet {
                 "  </head>" +
                 "<body>" +
                 "<div id = \"error\">Error " + text + "</div>" +
-                "<a href = \"http://localhost:8080/WebLab2_war_exploded\">Go back</a>" +
+                "<a href = \"http://localhost:8080/WebLab2_war_exploded\"> BACK </a>" +
                 "</body></html>";
         writer.write(answer);
         writer.close();
@@ -156,12 +233,11 @@ public class AreaCheckServlet extends HttpServlet {
     }
 
 
-
-    public boolean zona(Double x, Double y, Double r){
+    public boolean ifInZone(Double x, Double y, Double r){
         boolean res = false;
-        if ((x<0)&&(y>=0)&&(x>(-r)&&(y<r/2)) ||
-                (((x*x + y*y)<=r*r)&&(y<=0)&&(x<=0))||((y>(x/2-r/2))&&(y<=0)&&(x>0)&&x<=r)
-        ){
+        if ((x >= 0) && (y <= 0) && (x <= r) && (y >= (-r)) ||
+                (x >= 0) && (y >= 0) && (x*x + y*y <= r*r) ||
+                (x <=0) && (y >= 0) && (y <= x + r/2)){
             res = true;
         }
         return res;
