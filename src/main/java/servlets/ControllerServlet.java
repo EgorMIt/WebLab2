@@ -1,13 +1,9 @@
 package servlets;
 
-import model.Model;
-
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.Console;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -15,7 +11,7 @@ import java.io.PrintWriter;
 public class ControllerServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/html");
 
         try {
@@ -23,7 +19,7 @@ public class ControllerServlet extends HttpServlet {
             if (tryToParse(req.getParameter("Y")) &&
                     tryToParse(req.getParameter("R"))) {
 
-                // createErrorPage(resp, req.getParameter("Y"), req.getParameter("R"));
+                //createErrorPage(resp, req.getParameter("Y"), req.getParameter("R"));
                 getServletContext().getRequestDispatcher("/areaCheckServlet").forward(req, resp);
 
             } else {

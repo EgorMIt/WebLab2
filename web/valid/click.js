@@ -11,7 +11,7 @@ document.getElementById("R_field")
 document.getElementById("graphic").onclick = function(event) {
     const rect = document.getElementById("graphic").getBoundingClientRect();
 
-    if ((r>=2 && r<=5)) {
+    if ((r>=1 && r<=4)) {
 
         const x = ((event.clientX - rect.left -125)/(18*5)*r);
         const y = (((- event.clientY) + rect.bottom -125)/(18*5)*r);

@@ -3,33 +3,34 @@ package servlets;
 import model.Model;
 import point.Dot;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DecimalFormat;
 
 public class AreaCheckServlet extends HttpServlet {
-    public Model model = new Model();
+    public Model model;
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/html");
+
+        HttpSession session = req.getSession();
+        if(session.getAttribute("model") == null) {
+            model = new Model();
+        } else {
+            model = (Model)session.getAttribute("model");
+        }
 
         try {
             if (!(tryToParse(req.getParameter("x")) && (tryToParse(req.getParameter("Xgr"))))) {
                 if (tryToParse(req.getParameter("x"))) {
                     //Если нажата кнопка
-                   // createErrorPage(resp, "button true");
-                    checkbutton(req,resp);
+                    checkButton(req,resp);
                 } else if (tryToParse(req.getParameter("Xgr"))) {
                     //если пришло по нажатию на график
-                //    createErrorPage(resp, "grafic true");
-                    checkGrafic(req,resp);
+                    checkGraphic(req,resp);
                 } else {
                     createErrorPage(resp, "Please no...oooh_ i can't find X or Xgr");
                 }
@@ -45,41 +46,42 @@ public class AreaCheckServlet extends HttpServlet {
     }
 
 
-    public void checkbutton(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void checkButton(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
 
         double scale = Math.pow(10, 4);
         String res = "";
-        Double x = Math.ceil( Double.parseDouble(req.getParameter("x")) * scale) / scale;
-        Double y = Math.ceil(  Double.parseDouble(req.getParameter("Y")) * scale) / scale;
-        Double r =  Math.ceil(  Double.parseDouble(req.getParameter("R")) * scale) / scale;
+        Double x = Math.ceil(Double.parseDouble(req.getParameter("x")) * scale) / scale;
+        Double y = Math.ceil(Double.parseDouble(req.getParameter("Y")) * scale) / scale;
+        Double r = Math.ceil(Double.parseDouble(req.getParameter("R")) * scale) / scale;
 
         if(((x==-3)||(x==-2)||(x==-1)||(x==0)||(x==1)||(x==2)||(x==3)||(x==4)||(x==5))&&(y>=-5)&&(y<=3)&&(r>=1)&&(r<=4)){
             if(zona(x,y,r)){
                 res = "True";
                 model.setDot(new Dot(x,y,r,true));
-                drawTable(resp,x.toString(),y.toString(),r.toString(),res);
 
             }else {
                 res = "False";
                 model.setDot(new Dot(x,y,r,false));
-                drawTable(resp,x.toString(),y.toString(),r.toString(),res);
             }
+            drawTable(resp,x.toString(),y.toString(),r.toString(),res);
         }else {
           createErrorPage(resp,"error!");
         }
 
-
+        HttpSession session = req.getSession();
+        session.setAttribute("model", model);
 
 
     }
 
-    public void checkGrafic(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void checkGraphic(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         double scale = Math.pow(10, 4);
         String res = "";
-        Double x = Math.ceil( Double.parseDouble(req.getParameter("Xgr")) * scale) / scale;
-        Double y = Math.ceil(  Double.parseDouble(req.getParameter("Y")) * scale) / scale;
-        Double r =  Math.ceil(  Double.parseDouble(req.getParameter("R")) * scale) / scale;
+        Double x = Math.ceil(Double.parseDouble(req.getParameter("Xgr")) * scale) / scale;
+        Double y = Math.ceil(Double.parseDouble(req.getParameter("Y")) * scale) / scale;
+        Double r = Math.ceil(Double.parseDouble(req.getParameter("R")) * scale) / scale;
 
         if((r>=1)&&(r<=4)){
             if(zona(x,y,r)){
@@ -95,7 +97,7 @@ public class AreaCheckServlet extends HttpServlet {
                 }catch (Exception e){
                     drawTable(resp,x.toString(),y.toString(),r.toString(),res);
                 }
-              //  drawTable(resp,x.toString(),y.toString(),r.toString(),res);
+              //drawTable(resp,x.toString(),y.toString(),r.toString(),res);
 
             }else {
                 res = "False";
@@ -107,8 +109,6 @@ public class AreaCheckServlet extends HttpServlet {
         }else {
             createErrorPage(resp,"error!");
         }
-
-
     }
 
     public void drawTable(HttpServletResponse resp, String x, String y, String r, String otv) throws IOException {

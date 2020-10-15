@@ -5,14 +5,14 @@
 <head>
     <title>Lab2</title>
     <style>
-        <%@include file='css/style.css' %>
+        <%@include file='style.css' %>
     </style>
-
+    <!--<link href="style.css" rel="stylesheet" type="text/css"/>-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="shortcut icon" href="resources/smorc.png" type="image/png">
+    <link rel="shortcut icon" href="images/smorc.png" type="image/png">
 
 </head>
-    <body bgcolor="#931C14" background="resources/space.jpg">
+    <body>
         <form id="form" method="GET">
             <table class="table">
                 <thead>
